@@ -1,8 +1,7 @@
 package org.example;
 import java.lang.Math.*;
+import java.util.Arrays;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
     //bubbleSort
@@ -175,6 +174,177 @@ public class Main {
         }
 
     //Arrays.sort?
+    }
+
+    //quicksSort
+    public static void quickSort(int[] arr, int left, int right) {
+        if (left < right) {
+            int pivotIndex = partition(arr, left, right);
+            quickSort(arr, left, pivotIndex - 1);   // Ordena a sublista à esquerda do pivô
+            quickSort(arr, pivotIndex + 1, right); // Ordena a sublista à direita do pivô
+        }
+    }
+    private static int partition(int[] arr, int left, int right) {
+        int pivot = arr[left];
+        int i = left + 1;
+        int j = right;
+
+        while (true) {
+            // Move 'i' para a direita enquanto arr[i] <= pivot
+            while (i <= j && arr[i] <= pivot) i++;
+            // Move 'j' para a esquerda enquanto arr[j] > pivot
+            while (i <= j && arr[j] > pivot) j--;
+            if (i > j) break;
+
+            // Troca os elementos fora de lugar
+            swap(arr, i, j);
+        }
+        // Coloca o pivô na posição correta
+        swap(arr, left, j);
+        return j;
+    }
+
+    private static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    //quickSortSS
+    public static void quickSortSS(int[] arr, int low, int high) {
+        if (low < high) {
+            int pivotIndex = partition(arr, low, high);
+            quickSort(arr, low, pivotIndex - 1);
+            quickSort(arr, pivotIndex + 1, high);
+        }
+    }
+
+    private static int partitionSS(int[] arr, int low, int high){
+        int pivot = arr[high];
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                swap(arr, i, j);
+            }
+        }
+        swap(arr, i + 1, high);
+        return i + 1;
+    }
+
+    private static void swapSS(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    //quickSort do java = dual-pivot quicksort (Arrays.sort)
+
+    //countingSort
+    public static void countingSort(int[] array) {
+        if (array.length == 0) return;
+
+        // Encontra o maior valor no array
+        int max = array[0];
+        for (int num : array) {
+            if (num > max) {
+                max = num;
+            }
+        }
+
+        // Cria o array de contagem
+        int[] count = new int[max + 1];
+
+        // Conta a ocorrência de cada valor
+        for (int num : array) {
+            count[num]++;
+        }
+
+        // Reconstrói o array ordenado
+        int index = 0;
+        for (int i = 0; i < count.length; i++) {
+            while (count[i] > 0) {
+                array[index++] = i;
+                count[i]--;
+            }
+        }
+    }
+
+    //busca linear iterativa
+    public static int buscaLinear(int[] arr, int chave) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == chave) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    //busca linear recursiva
+    public static int buscaLinearRecursiva(int[] arr, int chave, int indice) {
+        if (indice >= arr.length) {
+            return -1;
+        }
+        if (arr[indice] == chave) {
+            return indice;
+        }
+        return buscaLinearRecursiva(arr, chave, indice + 1);
+    }
+
+    //busca binária iterativa
+    public static int buscaBinariaIterativa(int[] arr, int chave) {
+        int left = 0;
+        int right = arr.length - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] == chave) {
+                return mid;
+            } else if (arr[mid] < chave) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return -1;
+    }
+
+    //busca binária recursiva
+    public static int buscaBinariaRecursiva(int[] arr, int chave, int left, int right) {
+        if (left > right) {
+            return -1;
+        }
+
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == chave) {
+            return mid;
+        } else if (arr[mid] < chave) {
+            return buscaBinariaRecursiva(arr, chave, mid + 1, right);
+        } else {
+            return buscaBinariaRecursiva(arr, chave, left, mid - 1);
+        }
+    }
+
+    //busca linear iterativa duas pontas
+    public static int buscaLinearDuasPontas(int[] arr, int chave) {
+        int left = 0;
+        int right = arr.length - 1;
+
+        while (left <= right) {
+            if (arr[left] == chave) {
+                return left;
+            }
+            if (arr[right] == chave) {
+                return right;
+            }
+            left++;
+            right--;
+        }
+
+        return -1;
     }
 
 }
