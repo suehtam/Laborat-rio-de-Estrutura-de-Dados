@@ -68,14 +68,41 @@ public class BrincandoComPilhasEFilas {
 
 	private static String balancoDeParenteses(String expressao) {
 		PilhaDeFilas_IF p = new PilhaDeFilas();
-		//TODO //Retornar "correct" ou "incorrect" conforme o padrão do problema
-		return null;
+		
+		for (char c : expressao.toCharArray()) {
+			if (c == '(') {
+				p.push(1);
+			} else if (c == ')') {
+				if (p.isEmpty()) {
+					return "incorrect";
+				}
+				p.pop();
+			}
+		}
+		
+		if (p.isEmpty()) {
+			return "correct";
+		} else {
+			return "incorrect";
+		}
 	}
 	
 	private static int diamantesEAreia(String e) {
 		PilhaDeFilas_IF p = new PilhaDeFilas();
-		//TODO
-		return -1;
+		int diamantes = 0;
+		
+		for (char c : e.toCharArray()) {
+			if (c == '<') {
+				p.push(1);
+			} else if (c == '>') {
+				if (!p.isEmpty()) {
+					p.pop();
+					diamantes++;
+				}
+			}
+		}
+		
+		return diamantes;
 	}
 
 }
@@ -107,22 +134,47 @@ class FilaDePilhas implements FilaDePilhas_IF {
     }
 
     public void enqueue(int x) {
-        //TODO
+        p1.push(x);
     }
 
     public int dequeue() {
-    	//TODO
-        return -1;
+    	if (isEmpty()) {
+    		throw new RuntimeException("Estrutura vazia");
+    	}
+    	
+    	while (!p1.isEmpty()) {
+    		p2.push(p1.pop());
+    	}
+    	
+    	int resultado = p2.pop();
+    	
+    	while (!p2.isEmpty()) {
+    		p1.push(p2.pop());
+    	}
+    	
+        return resultado;
     }
 
     public int head() { 
-    	//TODO
-        return -1;
+    	if (isEmpty()) {
+    		throw new RuntimeException("Estrutura vazia");
+    	}
+    	
+    	while (!p1.isEmpty()) {
+    		p2.push(p1.pop());
+    	}
+    	
+    	int resultado = p2.peek();
+    	
+    	while (!p2.isEmpty()) {
+    		p1.push(p2.pop());
+    	}
+    	
+        return resultado;
     }
 
     public boolean isEmpty() {
-    	//TODO
-    	return false;
+    	return p1.isEmpty();
     }
 
 }
@@ -138,22 +190,47 @@ class PilhaDeFilas implements PilhaDeFilas_IF {
     }
 
 	public void push(int x) {
-		//TODO
+		f1.add(x);
 	}
 
 	public int pop() {
-		//TODO
-        return -1;
+		if (isEmpty()) {
+			throw new RuntimeException("Estrutura vazia");
+		}
+		
+		while (f1.size() > 1) {
+			f2.add(f1.poll());
+		}
+		
+		int resultado = f1.poll();
+		
+		while (!f2.isEmpty()) {
+			f1.add(f2.poll());
+		}
+		
+        return resultado;
 	}
 
 	public int top() {
-		//TODO
-        return -1;
+		if (isEmpty()) {
+			throw new RuntimeException("Estrutura vazia");
+		}
+		
+		while (f1.size() > 1) {
+			f2.add(f1.poll());
+		}
+		
+		int resultado = f1.peek();
+		
+		while (!f2.isEmpty()) {
+			f1.add(f2.poll());
+		}
+		
+        return resultado;
 	}
 	
 	public boolean isEmpty() {
-		//TODO
-		return false;
+		return f1.isEmpty();
 	}
     
 }
