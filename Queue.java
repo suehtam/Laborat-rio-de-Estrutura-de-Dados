@@ -1,33 +1,29 @@
-class Stack {
-    private Node top;
+class Queue {
+    private Stack stack1;
+    private Stack stack2;
 
-    public Stack() {
-        this.top = null;
+    public Queue() {
+        stack1 = new Stack();
+        stack2 = new Stack();
     }
 
-    public void push(int value) {
-        Node newNode = new Node(value);
-        newNode.next = top;
-        top = newNode;
+    public void enqueue(int value) {
+        stack1.push(value);
     }
 
-    public int pop() {
-        if (isEmpty()) {
-            throw new RuntimeException("Pilha vazia!");
+    public int dequeue() {
+        if (stack2.isEmpty()) {
+            while (!stack1.isEmpty()) {
+                stack2.push(stack1.pop());
+            }
         }
-        int value = top.data;
-        top = top.next;
-        return value;
-    }
-
-    public int peek() {
-        if (isEmpty()) {
-            throw new RuntimeException("Pilha vazia!");
+        if (stack2.isEmpty()) {
+            throw new RuntimeException("Fila vazia!");
         }
-        return top.data;
+        return stack2.pop();
     }
 
     public boolean isEmpty() {
-        return top == null;
+        return stack1.isEmpty() && stack2.isEmpty();
     }
 }
